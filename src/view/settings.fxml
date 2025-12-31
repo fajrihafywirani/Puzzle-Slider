@@ -21,12 +21,12 @@
             <Label text="SETTINGS" styleClass="title"/>
 
             <VBox alignment="CENTER" spacing="5">
-                <Label text="Music Volume"/>
+                <Label text="Music Volume" style="-fx-text-fill: white;"/>
                 <Slider fx:id="musicSlider" maxWidth="200" min="0" max="100"/>
             </VBox>
 
             <VBox alignment="CENTER" spacing="5">
-                <Label text="SFX Volume"/>
+                <Label text="SFX Volume" style="-fx-text-fill: white;"/>
                 <Slider fx:id="sfxSlider" maxWidth="200" min="0" max="100"/>
             </VBox>
         </VBox>
