@@ -7,6 +7,7 @@ public class GameState implements Serializable {
     private int size = 3; // Default 3x3
     private boolean imageMode = false;
     private int[][] board;
+    private int imageIndex = 0;
 
     // Gunakan Singleton agar data mudah diakses dari Controller mana pun
     private static GameState instance;
@@ -22,6 +23,8 @@ public class GameState implements Serializable {
 
     public int getSize() { return size; }
     public void setSize(int s) { this.size = s; }
+    public int getImageIndex() { return imageIndex; }
+    public void setImageIndex(int index) { this.imageIndex = index; }
 
     // Untuk memuat data hasil load dari SaveManager
     public static void setInstance(GameState loadedState) {

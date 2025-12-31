@@ -5,6 +5,7 @@ import model.GameState;
 import util.MusicPlayer;
 import util.SceneManager;
 import util.SaveManager;
+import java.util.Random;
 
 public class SizeSelectController {
 
@@ -17,15 +18,21 @@ public class SizeSelectController {
     @FXML
     public void select5x5() { startGame(5); }
 
+    private static final java.util.Random RAND = new java.util.Random();
+
     private void startGame(int size) {
         MusicPlayer.playClickSound();
-
+        GameState state = GameState.getInstance();
         // 1. Set ukuran di GameState
-        GameState.getInstance().setSize(size);
+        state.setSize(size);
+
+        int totalGambar = 5;
+        int randomIdx = RAND.nextInt(totalGambar) + 1;
+        state.setImageIndex(randomIdx);
 
         // 2. Karena ini game baru dari menu pilih ukuran, hapus save lama & reset board
         SaveManager.deleteSave();
-        GameState.getInstance().setBoard(null);
+        state.setBoard(null);
 
         // 3. Pindah ke arena permainan
         SceneManager.switchScene("/view/game.fxml");

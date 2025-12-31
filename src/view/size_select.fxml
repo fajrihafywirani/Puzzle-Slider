@@ -20,7 +20,7 @@
             <Label text="PILIH UKURAN PUZZLE" styleClass="title" />
 
             <Label text="Semakin besar ukuran, semakin sulit tantangannya!"
-                   style="-fx-font-size: 16px; -fx-text-fill: #bdc3c7;" />
+                   style="-fx-font-size: 16px;"/>
 
             <VBox alignment="CENTER" spacing="15.0" maxWidth="300.0">
                 <Button onAction="#select3x3" prefWidth="200"

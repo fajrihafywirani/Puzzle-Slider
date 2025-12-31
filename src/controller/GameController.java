@@ -62,18 +62,26 @@ public class GameController {
         GameState state = GameState.getInstance();
         int size = state.getSize();
 
-        // Tentukan gambar berdasarkan ukuran
-        String imageName = "sample3.jpeg"; // Default
-        if (size == 4) imageName = "sample4.jpeg";
-        else if (size == 5) imageName = "sample5.jpeg";
-
         Image fullImage = null;
         if (state.isImageMode()) {
-            fullImage = new Image(getClass().getResourceAsStream("/images/" + imageName));
+            int idx = state.getImageIndex();
+
+            if (idx == 0) idx = 1;
+            // Gunakan "/" di awal untuk menandakan root resources
+            String path = "/images/sample" + idx + ".jpeg";
+
+            var res = getClass().getResource(path); // Gunakan getResource
+            if (res != null) {
+                fullImage = new Image(res.toString());
+            } else {
+                System.err.println("File TIDAK DITEMUKAN di: " + path);
+                // Fallback jika gambar hilang agar tidak error
+                fullImage = null;
+            }
         }
 
-        // Atur GridPane agar ukurannya pas
-        grid.setHgap(2); grid.setVgap(2);
+        grid.setHgap(0); // Set ke 0 agar gambar terlihat menyatu
+        grid.setVgap(0);
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -85,9 +93,10 @@ public class GameController {
                     btn.setPrefSize(btnSize, btnSize);
 
                     if (state.isImageMode() && fullImage != null) {
-                        // Logika potong gambar dinamis berdasarkan 'size'
                         int originalRow = (value - 1) / size;
                         int originalCol = (value - 1) % size;
+
+                        // Pembagian tile berdasarkan ukuran (3, 4, atau 5)
                         double tileW = fullImage.getWidth() / size;
                         double tileH = fullImage.getHeight() / size;
 
@@ -121,6 +130,8 @@ public class GameController {
                 }
             }
         }
+        System.out.println("Mencoba memuat gambar index: " + state.getImageIndex());
+        System.out.println("Mode Gambar Aktif: " + state.isImageMode());
     }
 
     @FXML
