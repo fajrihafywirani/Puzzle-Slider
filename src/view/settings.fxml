@@ -6,8 +6,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.ModeSelectController">
-
+            fx:controller="controller.SettingsController">
 
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding:10;">
@@ -19,18 +18,17 @@
 
     <center>
         <VBox alignment="CENTER" spacing="25">
+            <Label text="SETTINGS" styleClass="title"/>
 
-            <Label text="Pilih Mode Puzzle"
-                   styleClass="title"/>
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="Music Volume"/>
+                <Slider fx:id="musicSlider" maxWidth="200" min="0" max="100"/>
+            </VBox>
 
-            <Button text="Puzzle Angka"
-                    prefWidth="220"
-                    onAction="#numberMode"/>
-
-            <Button text="Puzzle Gambar"
-                    prefWidth="220"
-                    onAction="#imageMode"/>
-
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="SFX Volume"/>
+                <Slider fx:id="sfxSlider" maxWidth="200" min="0" max="100"/>
+            </VBox>
         </VBox>
     </center>
 

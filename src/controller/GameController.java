@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import model.GameState;
 import model.PuzzleBoard;
+import util.MusicPlayer;
 import util.SaveManager;
 import util.SceneManager;
 
@@ -94,6 +95,7 @@ public class GameController {
     
     @FXML // Pastikan anotasi ini ada
     public void backToMenu() {
+        MusicPlayer.playClickSound();
         if (puzzle != null) {
             GameState.setBoard(puzzle.board);
             SaveManager.save();

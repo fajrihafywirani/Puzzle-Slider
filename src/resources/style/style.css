@@ -1,5 +1,6 @@
 .root {
     -fx-background-color: linear-gradient(#1e3c72, #2a5298);
+    -fx-alignment: CENTER;
 }
 
 .title {
