@@ -80,17 +80,17 @@ public class GameController {
 
     @FXML
     private void showWinAlert() {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-        alert.setTitle("Puzzle Solved");
-        alert.setHeaderText(null);
-        alert.setContentText("Selamat! Anda berhasil menyusun puzzle!");
-        alert.showAndWait();
+        // Jalankan sedikit delay agar user bisa melihat papan terakhir sebelum pindah
+        javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(0.5));
+        delay.setOnFinished(event -> {
+            // Hapus data permainan yang sudah selesai
+            SaveManager.deleteSave();
+            GameState.setBoard(null);
 
-        // Reset data agar tidak loading papan yang sudah menang terus-menerus
-        SaveManager.deleteSave();
-        GameState.setBoard(null);
-
-        SceneManager.switchScene("/view/main_menu.fxml");
+            // Pindah ke Win Scene
+            SceneManager.switchScene("/view/win_scene.fxml");
+        });
+        delay.play();
     }
     
     @FXML // Pastikan anotasi ini ada

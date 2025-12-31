@@ -31,7 +31,7 @@ public class SceneManager {
             Scene scene = stage.getScene();
             if (scene == null) {
                 // Ini untuk pertama kali aplikasi jalan (Main Menu)
-                scene = new Scene(root, 350, 450);
+                scene = new Scene(root, 400, 500);
             } else {
                 // Ganti isi scene tanpa membuat objek Scene baru agar ukuran stabil
                 scene.setRoot(root);
