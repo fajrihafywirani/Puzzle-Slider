@@ -9,6 +9,9 @@ import model.PuzzleBoard;
 import util.MusicPlayer;
 import util.SaveManager;
 import util.SceneManager;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 
 public class GameController {
 
@@ -22,38 +25,83 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        if (modeLabel != null) {
-            modeLabel.setText(GameState.isImageMode() ? "Mode: Puzzle Gambar" : "Mode: Puzzle Angka");
+        try {
+            MusicPlayer.playMusic("game.mpeg");
+        } catch (Exception e) {
+            System.err.println("Gagal memutar musik: " + e.getMessage());
         }
 
-        // 1. Jika ada file save, kita LOAD dulu isinya ke GameState
-        if (SaveManager.hasSave() && GameState.getBoard() == null) {
+        // Gunakan Singleton secara konsisten
+        GameState state = GameState.getInstance();
+
+        if (modeLabel != null) {
+            modeLabel.setText(state.isImageMode() ? "Mode: Puzzle Gambar" : "Mode: Puzzle Angka");
+        }
+
+        // Load jika ada save
+        if (SaveManager.hasSave() && state.getBoard() == null) {
             SaveManager.load();
         }
 
-        // 2. Sekarang cek apakah GameState sudah punya data (hasil load tadi atau hasil move sebelumnya)
-        if (GameState.getBoard() != null) {
-            // Gunakan papan yang ada di memory/save
-            puzzle = new PuzzleBoard(GameState.getBoard());
-        } else {
-            // Jika benar-benar kosong, buat baru (shuffle)
-            puzzle = new PuzzleBoard();
-            GameState.setBoard(puzzle.board);
-        }
+        // Re-assign state setelah load (karena load mungkin mengganti instance)
+        state = GameState.getInstance();
 
+        if (state.getBoard() != null) {
+            puzzle = new PuzzleBoard(state.getBoard());
+        } else {
+            puzzle = new PuzzleBoard();
+            state.setBoard(puzzle.board);
+        }
         drawBoard();
     }
 
     private void drawBoard() {
         grid.getChildren().clear();
 
+        // Load gambar jika dalam mode gambar
+        Image fullImage = null;
+        if (GameState.getInstance().isImageMode()) {
+            fullImage = new Image(getClass().getResourceAsStream("/images/sample.jpeg"));
+        }
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-
                 int value = puzzle.board[i][j];
                 if (value != 0) {
-                    Button btn = new Button(String.valueOf(value));
-                    btn.setPrefSize(80, 80);
+                    Button btn = new Button();
+                    btn.setPrefSize(100, 100);
+
+                    if (GameState.getInstance().isImageMode() && fullImage != null) {
+                        int originalRow = (value - 1) / 3;
+                        int originalCol = (value - 1) % 3;
+
+                        double tileW = fullImage.getWidth() / 3;
+                        double tileH = fullImage.getHeight() / 3;
+
+                        WritableImage croppedImage = new WritableImage(
+                                fullImage.getPixelReader(),
+                                (int)(originalCol * tileW),
+                                (int)(originalRow * tileH),
+                                (int)tileW,
+                                (int)tileH
+                        );
+
+                        ImageView view = new ImageView(croppedImage);
+
+                        // SAMAKAN dengan ukuran tombol agar FULL
+                        view.setFitWidth(100);
+                        view.setFitHeight(100);
+
+                        // Agar gambar tidak gepeng jika aspect ratio tidak pas
+                        view.setPreserveRatio(false);
+
+                        btn.setGraphic(view);
+
+                        // Tambahkan class CSS khusus gambar agar border/padding hilang
+                        btn.getStyleClass().add("grid-button-image");
+                    }
+
+                    btn.getStyleClass().add("grid-button");
 
                     int r = i;
                     int c = j;
@@ -61,17 +109,10 @@ public class GameController {
                     btn.setOnAction(e -> {
                         if (puzzle.move(r, c)) {
                             drawBoard();
-                            GameState.setBoard(puzzle.board);
-
-                            // TAMBAHKAN INI
-                            if (puzzle.isWin()) {
-                                System.out.println("Selamat! Anda Menang!");
-                                // Anda bisa menambahkan Alert JavaFX di sini
-                                showWinAlert();
-                            }
+                            GameState.getInstance().setBoard(puzzle.board);
+                            if (puzzle.isWin()) showWinAlert();
                         }
                     });
-
                     grid.add(btn, j, i);
                 }
             }
@@ -85,7 +126,7 @@ public class GameController {
         delay.setOnFinished(event -> {
             // Hapus data permainan yang sudah selesai
             SaveManager.deleteSave();
-            GameState.setBoard(null);
+            GameState.getInstance().setBoard(null);
 
             // Pindah ke Win Scene
             SceneManager.switchScene("/view/win_scene.fxml");
@@ -97,7 +138,7 @@ public class GameController {
     public void backToMenu() {
         MusicPlayer.playClickSound();
         if (puzzle != null) {
-            GameState.setBoard(puzzle.board);
+            GameState.getInstance().setBoard(puzzle.board);
             SaveManager.save();
         }
         // Tambahkan "/" di depan path agar sesuai dengan SceneManager

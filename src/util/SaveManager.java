@@ -9,22 +9,25 @@ public class SaveManager {
 
     public static void save() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE))) {
-            oos.writeObject(GameState.getBoard());
-            oos.writeBoolean(GameState.isImageMode()); // Tambahkan ini
+            // Menyimpan seluruh object GameState (termasuk board dan imageMode)
+            oos.writeObject(GameState.getInstance());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Gagal menyimpan data: " + e.getMessage());
         }
     }
 
     public static void load() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE))) {
-            int[][] board = (int[][]) ois.readObject();
-            boolean isImage = ois.readBoolean(); // Tambahkan ini
+        File file = new File(FILE);
+        if (!file.exists()) return;
 
-            GameState.setBoard(board);
-            GameState.setImageMode(isImage); // Set kembali modenya
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            GameState loaded = (GameState) ois.readObject();
+            // Mengganti instance di memori dengan data dari file
+            GameState.setInstance(loaded);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Gagal memuat save data: " + e.getMessage());
+            // Opsional: hapus file jika rusak agar tidak error terus menerus
+            file.delete();
         }
     }
 
@@ -32,12 +35,14 @@ public class SaveManager {
         return new File(FILE).exists();
     }
 
-    // Method baru untuk reset game
     public static void deleteSave() {
         File file = new File(FILE);
         if (file.exists()) {
             file.delete();
         }
-        GameState.setBoard(null); // Pastikan state di memori juga bersih
+        // Perbaikan: Gunakan getInstance() karena setBoard bukan static lagi
+        if (GameState.getInstance() != null) {
+            GameState.getInstance().setBoard(null);
+        }
     }
 }

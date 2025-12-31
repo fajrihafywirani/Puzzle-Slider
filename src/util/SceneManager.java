@@ -44,6 +44,19 @@ public class SceneManager {
                 scene.getStylesheets().add(cssResource.toExternalForm());
             }
 
+            // OTOMATISASI SUARA HOVER DAN KLIK
+            scene.getRoot().addEventFilter(javafx.scene.input.MouseEvent.MOUSE_ENTERED_TARGET, event -> {
+                if (event.getTarget() instanceof javafx.scene.control.Button) {
+                    MusicPlayer.playHoverSound();
+                }
+            });
+
+            scene.getRoot().addEventFilter(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
+                if (event.getTarget() instanceof javafx.scene.control.Button) {
+                    MusicPlayer.playClickSound();
+                }
+            });
+
             stage.setScene(scene);
 
             // 3. Logika Posisi dan Ukuran

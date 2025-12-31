@@ -25,11 +25,11 @@
 
             <Button text="Puzzle Angka"
                     prefWidth="220"
-                    onAction="#numberMode"/>
+                    onAction="#chooseNumberMode"/>
 
             <Button text="Puzzle Gambar"
                     prefWidth="220"
-                    onAction="#imageMode"/>
+                    onAction="#chooseImageMode"/>
 
         </VBox>
     </center>

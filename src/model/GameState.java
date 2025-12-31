@@ -3,23 +3,33 @@ package model;
 import java.io.Serializable;
 
 public class GameState implements Serializable {
+    // Versi ID untuk validasi serialisasi
+    private static final long serialVersionUID = 1L;
 
-    private static boolean imageMode = false;
-    private static int[][] board;
+    // Hapus keyword static agar bisa di-save ke file
+    private boolean imageMode = false;
+    private int[][] board;
 
-    public static boolean isImageMode() {
-        return imageMode;
+    // Gunakan Singleton agar data mudah diakses dari Controller mana pun
+    private static GameState instance;
+
+    private GameState() {} // Constructor private
+
+    public static GameState getInstance() {
+        if (instance == null) {
+            instance = new GameState();
+        }
+        return instance;
     }
 
-    public static void setImageMode(boolean mode) {
-        imageMode = mode;
+    // Untuk memuat data hasil load dari SaveManager
+    public static void setInstance(GameState loadedState) {
+        instance = loadedState;
     }
 
-    public static int[][] getBoard() {
-        return board;
-    }
-
-    public static void setBoard(int[][] b) {
-        board = b;
-    }
+    // Getter dan Setter non-static
+    public boolean isImageMode() { return imageMode; }
+    public void setImageMode(boolean mode) { this.imageMode = mode; }
+    public int[][] getBoard() { return board; }
+    public void setBoard(int[][] b) { this.board = b; }
 }

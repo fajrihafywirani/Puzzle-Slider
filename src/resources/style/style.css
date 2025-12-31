@@ -11,8 +11,10 @@
 
 .button {
     -fx-font-size: 16px;
-    -fx-background-radius: 20;
-    -fx-padding: 10 30;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    /* Menghilangkan animasi skala agar tidak membesar/mengecil */
+    -fx-transition-duration: 0.2s;
 }
 
 .title-win {
@@ -21,7 +23,37 @@
 }
 
 .button:hover {
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-    -fx-cursor: hand;
+    /* Alih-alih membesar (scale), kita buat sedikit lebih terang */
+    -fx-brightness: 1.2;
+    /* Atau berikan sedikit bayangan lembut ke dalam */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.grid-button {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdde1;
+    -fx-border-width: 1px;
+    -fx-text-fill: #2f3640;
+    -fx-font-weight: bold;
+}
+
+.grid-button:hover {
+    /* Memberikan warna border saat diarahkan agar tidak merusak ukuran kotak */
+    -fx-border-color: #3498db;
+    -fx-border-width: 2px;
+    -fx-background-color: #f5f6fa;
+}
+
+.grid-button-image {
+    -fx-padding: 0;             /* Menghilangkan ruang dalam tombol */
+    -fx-background-insets: 0;   /* Menghilangkan jarak background dari border */
+    -fx-border-width: 0.5px;    /* Berikan border sangat tipis agar antar potongan terlihat */
+    -fx-border-color: #ffffff;  /* Warna putih tipis sebagai pemisah potongan */
+    -fx-background-color: transparent; /* Supaya background tombol asli tidak terlihat */
+}
+
+.grid-button-image:hover {
+    -fx-opacity: 0.8;           /* Memberikan efek visual saat kursor di atas gambar */
+    -fx-border-color: #3498db;  /* Highlight warna biru saat hover */
+    -fx-border-width: 2px;
 }

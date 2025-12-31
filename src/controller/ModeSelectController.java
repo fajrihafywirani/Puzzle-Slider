@@ -8,22 +8,22 @@ import util.SceneManager;
 public class ModeSelectController {
 
     @FXML
-    public void numberMode() {
-        MusicPlayer.playClickSound();
-        GameState.setImageMode(false);
-        SceneManager.switchScene("/view/game.fxml"); // Tambahkan "/"
+    public void chooseImageMode() {
+        GameState.getInstance().setImageMode(true);
+        GameState.getInstance().setBoard(null); // Reset board agar baru
+        SceneManager.switchScene("/view/game.fxml");
     }
 
     @FXML
-    public void imageMode() {
-        MusicPlayer.playClickSound();
-        GameState.setImageMode(true);
-        SceneManager.switchScene("/view/game.fxml"); // Tambahkan "/"
+    public void chooseNumberMode() {
+        GameState.getInstance().setImageMode(false);
+        GameState.getInstance().setBoard(null);
+        SceneManager.switchScene("/view/game.fxml");
     }
 
     @FXML
     public void backToMenu() {
         MusicPlayer.playClickSound();
-        SceneManager.switchScene("/view/main_menu.fxml"); // Tambahkan "/"
+        SceneManager.switchScene("/view/main_menu.fxml");
     }
 }

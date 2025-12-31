@@ -11,7 +11,7 @@ public class MainMenuController {
     public void initialize() {
         // Pastikan MusicPlayer tidak error, jika error layar bisa putih
         try {
-            MusicPlayer.playMenuMusic();
+            MusicPlayer.playMusic("menu.mp3");
         } catch (Exception e) {
             System.err.println("Gagal memutar musik: " + e.getMessage());
         }
