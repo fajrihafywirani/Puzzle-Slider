@@ -9,14 +9,6 @@
             fx:controller="controller.ModeSelectController">
 
 
-    <top>
-        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding:10;">
-            <Button text="← Back"
-                    onAction="#backToMenu"
-                    BorderPane.alignment="TOP_LEFT"/>
-        </HBox>
-    </top>
-
     <center>
         <VBox alignment="CENTER" spacing="25">
 
@@ -30,6 +22,9 @@
             <Button text="Puzzle Gambar"
                     prefWidth="220"
                     onAction="#chooseImageMode"/>
+
+            <Button text="← Back"
+                    onAction="#backToMenu"/>
 
         </VBox>
     </center>

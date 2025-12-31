@@ -11,14 +11,14 @@ public class ModeSelectController {
     public void chooseImageMode() {
         GameState.getInstance().setImageMode(true);
         GameState.getInstance().setBoard(null); // Reset board agar baru
-        SceneManager.switchScene("/view/game.fxml");
+        SceneManager.switchScene("/view/size_select.fxml");
     }
 
     @FXML
     public void chooseNumberMode() {
         GameState.getInstance().setImageMode(false);
         GameState.getInstance().setBoard(null);
-        SceneManager.switchScene("/view/game.fxml");
+        SceneManager.switchScene("/view/size_select.fxml");
     }
 
     @FXML

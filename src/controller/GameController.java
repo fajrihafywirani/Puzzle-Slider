@@ -46,10 +46,12 @@ public class GameController {
         // Re-assign state setelah load (karena load mungkin mengganti instance)
         state = GameState.getInstance();
 
+        // Di initialize() GameController
         if (state.getBoard() != null) {
             puzzle = new PuzzleBoard(state.getBoard());
         } else {
-            puzzle = new PuzzleBoard();
+            // Memberikan parameter size (3, 4, atau 5)
+            puzzle = new PuzzleBoard(state.getSize());
             state.setBoard(puzzle.board);
         }
         drawBoard();
@@ -57,55 +59,57 @@ public class GameController {
 
     private void drawBoard() {
         grid.getChildren().clear();
+        GameState state = GameState.getInstance();
+        int size = state.getSize();
 
-        // Load gambar jika dalam mode gambar
+        // Tentukan gambar berdasarkan ukuran
+        String imageName = "sample3.jpeg"; // Default
+        if (size == 4) imageName = "sample4.jpeg";
+        else if (size == 5) imageName = "sample5.jpeg";
+
         Image fullImage = null;
-        if (GameState.getInstance().isImageMode()) {
-            fullImage = new Image(getClass().getResourceAsStream("/images/sample.jpeg"));
+        if (state.isImageMode()) {
+            fullImage = new Image(getClass().getResourceAsStream("/images/" + imageName));
         }
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        // Atur GridPane agar ukurannya pas
+        grid.setHgap(2); grid.setVgap(2);
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 int value = puzzle.board[i][j];
                 if (value != 0) {
                     Button btn = new Button();
-                    btn.setPrefSize(100, 100);
+                    // Ukuran tombol otomatis mengecil jika papan semakin besar
+                    double btnSize = 400.0 / size;
+                    btn.setPrefSize(btnSize, btnSize);
 
-                    if (GameState.getInstance().isImageMode() && fullImage != null) {
-                        int originalRow = (value - 1) / 3;
-                        int originalCol = (value - 1) % 3;
+                    if (state.isImageMode() && fullImage != null) {
+                        // Logika potong gambar dinamis berdasarkan 'size'
+                        int originalRow = (value - 1) / size;
+                        int originalCol = (value - 1) % size;
+                        double tileW = fullImage.getWidth() / size;
+                        double tileH = fullImage.getHeight() / size;
 
-                        double tileW = fullImage.getWidth() / 3;
-                        double tileH = fullImage.getHeight() / 3;
-
-                        WritableImage croppedImage = new WritableImage(
+                        WritableImage cropped = new WritableImage(
                                 fullImage.getPixelReader(),
-                                (int)(originalCol * tileW),
-                                (int)(originalRow * tileH),
-                                (int)tileW,
-                                (int)tileH
+                                (int)(originalCol * tileW), (int)(originalRow * tileH),
+                                (int)tileW, (int)tileH
                         );
 
-                        ImageView view = new ImageView(croppedImage);
-
-                        // SAMAKAN dengan ukuran tombol agar FULL
-                        view.setFitWidth(100);
-                        view.setFitHeight(100);
-
-                        // Agar gambar tidak gepeng jika aspect ratio tidak pas
-                        view.setPreserveRatio(false);
-
+                        ImageView view = new ImageView(cropped);
+                        view.setFitWidth(btnSize);
+                        view.setFitHeight(btnSize);
                         btn.setGraphic(view);
-
-                        // Tambahkan class CSS khusus gambar agar border/padding hilang
                         btn.getStyleClass().add("grid-button-image");
+                    } else {
+                        btn.setText(String.valueOf(value));
+                        btn.getStyleClass().add("grid-button");
                     }
 
-                    btn.getStyleClass().add("grid-button");
-
+                    // Aksi tombol
                     int r = i;
                     int c = j;
-
                     btn.setOnAction(e -> {
                         if (puzzle.move(r, c)) {
                             drawBoard();

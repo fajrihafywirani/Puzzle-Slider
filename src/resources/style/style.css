@@ -1,19 +1,19 @@
 .root {
-    -fx-background-color: linear-gradient(#1e3c72, #2a5298);
+    -fx-background-color: linear-gradient(#F6F5F2, #DDE5D0);
     -fx-alignment: CENTER;
 }
 
 .title {
     -fx-font-size: 32px;
-    -fx-text-fill: white;
+    -fx-text-fill: #3F4F44;
     -fx-font-weight: bold;
 }
 
 .button {
     -fx-font-size: 16px;
     -fx-background-radius: 5;
+    -fx-background-color: #B7C4A7;
     -fx-cursor: hand;
-    /* Menghilangkan animasi skala agar tidak membesar/mengecil */
     -fx-transition-duration: 0.2s;
 }
 
@@ -23,6 +23,7 @@
 }
 
 .button:hover {
+    -fx-background-color: #A8B89A;
     /* Alih-alih membesar (scale), kita buat sedikit lebih terang */
     -fx-brightness: 1.2;
     /* Atau berikan sedikit bayangan lembut ke dalam */
@@ -30,16 +31,17 @@
 }
 
 .grid-button {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #dcdde1;
-    -fx-border-width: 1px;
-    -fx-text-fill: #2f3640;
+    -fx-background-color: #ffffff; /* Background tombol putih */
+    -fx-text-fill: #3F4F44;        /* Warna angka biru gelap/hitam */
+    -fx-font-size: 24px;           /* Ukuran angka diperbesar */
     -fx-font-weight: bold;
+    -fx-border-color: #3F4F44;
+    -fx-border-width: 1px;
 }
 
 .grid-button:hover {
     /* Memberikan warna border saat diarahkan agar tidak merusak ukuran kotak */
-    -fx-border-color: #3498db;
+    -fx-border-color: #3F4F44;
     -fx-border-width: 2px;
     -fx-background-color: #f5f6fa;
 }
@@ -54,6 +56,24 @@
 
 .grid-button-image:hover {
     -fx-opacity: 0.8;           /* Memberikan efek visual saat kursor di atas gambar */
-    -fx-border-color: #3498db;  /* Highlight warna biru saat hover */
+    -fx-border-color: #3F4F44;  /* Highlight warna biru saat hover */
     -fx-border-width: 2px;
+}
+
+.menu-button {
+    -fx-background-color: #B7C4A7;
+    -fx-text-fill: #3F4F44;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-border-color: #3F4F44;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #B7C4A7;
+    -fx-text-fill: #3F4F44;
+    -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.6), 15, 0, 0, 0);
 }

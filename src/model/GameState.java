@@ -3,10 +3,8 @@ package model;
 import java.io.Serializable;
 
 public class GameState implements Serializable {
-    // Versi ID untuk validasi serialisasi
     private static final long serialVersionUID = 1L;
-
-    // Hapus keyword static agar bisa di-save ke file
+    private int size = 3; // Default 3x3
     private boolean imageMode = false;
     private int[][] board;
 
@@ -21,6 +19,9 @@ public class GameState implements Serializable {
         }
         return instance;
     }
+
+    public int getSize() { return size; }
+    public void setSize(int s) { this.size = s; }
 
     // Untuk memuat data hasil load dari SaveManager
     public static void setInstance(GameState loadedState) {

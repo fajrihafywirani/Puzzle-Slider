@@ -8,27 +8,23 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controller.SettingsController">
 
-    <top>
-        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding:10;">
-            <Button text="← Back"
-                    onAction="#backToMenu"
-                    BorderPane.alignment="TOP_LEFT"/>
-        </HBox>
-    </top>
 
     <center>
         <VBox alignment="CENTER" spacing="25">
             <Label text="SETTINGS" styleClass="title"/>
 
             <VBox alignment="CENTER" spacing="5">
-                <Label text="Music Volume" style="-fx-text-fill: white;"/>
+                <Label text="Music Volume" style="-fx-text-fill: #3F4F44;"/>
                 <Slider fx:id="musicSlider" maxWidth="200" min="0" max="100"/>
             </VBox>
 
             <VBox alignment="CENTER" spacing="5">
-                <Label text="SFX Volume" style="-fx-text-fill: white;"/>
+                <Label text="SFX Volume" style="-fx-text-fill: #3F4F44;"/>
                 <Slider fx:id="sfxSlider" maxWidth="200" min="0" max="100"/>
             </VBox>
+
+            <Button text="← Back"
+                    onAction="#backToMenu"/>
         </VBox>
     </center>
 
