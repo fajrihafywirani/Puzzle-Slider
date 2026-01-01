@@ -130,8 +130,6 @@ public class GameController {
                 }
             }
         }
-        System.out.println("Mencoba memuat gambar index: " + state.getImageIndex());
-        System.out.println("Mode Gambar Aktif: " + state.isImageMode());
     }
 
     @FXML

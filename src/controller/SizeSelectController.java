@@ -26,7 +26,7 @@ public class SizeSelectController {
         // 1. Set ukuran di GameState
         state.setSize(size);
 
-        int totalGambar = 5;
+        int totalGambar = 6;
         int randomIdx = RAND.nextInt(totalGambar) + 1;
         state.setImageIndex(randomIdx);
 
