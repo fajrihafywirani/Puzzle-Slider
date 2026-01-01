@@ -19,8 +19,4 @@ public class Main extends Application {
         // Tapi memanggilnya di sini lagi tidak masalah untuk memastikan window muncul.
         stage.show();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
