@@ -77,3 +77,10 @@
     -fx-text-fill: #3F4F44;
     -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.6), 15, 0, 0, 0);
 }
+
+.preview-box {
+    -fx-border-color: #ecf0f1;
+    -fx-border-width: 3px;
+    -fx-border-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}

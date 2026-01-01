@@ -20,7 +20,7 @@ import javafx.util.Duration;
 public class GameController {
 
     @FXML
-    private Label bestTimeLabel;
+    private ImageView previewImage;
 
     @FXML
     private Label timerLabel;
@@ -32,6 +32,7 @@ public class GameController {
     private Label modeLabel;
 
     private PuzzleBoard puzzle;
+    private Image fullImage;
     private Timeline timeline;
     private int seconds;
 
@@ -45,6 +46,24 @@ public class GameController {
 
         // Gunakan Singleton secara konsisten
         GameState state = GameState.getInstance();
+
+        // --- LOGIKA PEMUATAN GAMBAR DINAMIS ---
+        if (state.isImageMode()) {
+            int idx = state.getImageIndex();
+            String path = "/images/sample" + idx + ".jpeg";
+            var res = getClass().getResource(path);
+
+            if (res != null) {
+                this.fullImage = new Image(res.toString());
+                // Tampilkan di kotak preview
+                if (previewImage != null) {
+                    previewImage.setImage(fullImage);
+                }
+            }
+        } else {
+            // Jika mode angka, sembunyikan atau kosongkan preview
+            if (previewImage != null) previewImage.setImage(null);
+        }
 
         if (modeLabel != null) {
             modeLabel.setText(state.isImageMode() ? "Mode: Puzzle Gambar" : "Mode: Puzzle Angka");
@@ -72,17 +91,6 @@ public class GameController {
         startTimer();
 
         drawBoard();
-    }
-
-    private void updateBestTimeDisplay() {
-        int best = GameState.getInstance().getBestTime(GameState.getInstance().getSize());
-        if (best == Integer.MAX_VALUE) {
-            bestTimeLabel.setText("Rekor: --:--");
-        } else {
-            int mins = best / 60;
-            int secs = best % 60;
-            bestTimeLabel.setText(String.format("Rekor: %02d:%02d", mins, secs));
-        }
     }
 
     private void startTimer() {
