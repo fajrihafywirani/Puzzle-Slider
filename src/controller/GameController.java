@@ -12,8 +12,18 @@ import util.SceneManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class GameController {
+
+    @FXML
+    private Label bestTimeLabel;
+
+    @FXML
+    private Label timerLabel;
 
     @FXML
     private GridPane grid;
@@ -22,6 +32,8 @@ public class GameController {
     private Label modeLabel;
 
     private PuzzleBoard puzzle;
+    private Timeline timeline;
+    private int seconds;
 
     @FXML
     public void initialize() {
@@ -54,7 +66,51 @@ public class GameController {
             puzzle = new PuzzleBoard(state.getSize());
             state.setBoard(puzzle.board);
         }
+
+        // Mulai Timer
+        seconds = GameState.getInstance().getSecondsElapsed();
+        startTimer();
+
         drawBoard();
+    }
+
+    private void updateBestTimeDisplay() {
+        int best = GameState.getInstance().getBestTime(GameState.getInstance().getSize());
+        if (best == Integer.MAX_VALUE) {
+            bestTimeLabel.setText("Rekor: --:--");
+        } else {
+            int mins = best / 60;
+            int secs = best % 60;
+            bestTimeLabel.setText(String.format("Rekor: %02d:%02d", mins, secs));
+        }
+    }
+
+    private void startTimer() {
+        if (timeline != null) timeline.stop();
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            seconds++;
+            updateTimerLabel();
+            GameState.getInstance().setSecondsElapsed(seconds);
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private void updateTimerLabel() {
+        int mins = seconds / 60;
+        int secs = seconds % 60;
+        if (timerLabel != null) {
+            timerLabel.setText(String.format("Waktu: %02d:%02d", mins, secs));
+        }
+    }
+
+    // Panggil ini di showWinAlert()
+    private void stopTimer() {
+        if (timeline != null) {
+            timeline.stop();
+            timeline = null; // Pastikan benar-benar mati
+        }
     }
 
     private void drawBoard() {
@@ -134,12 +190,34 @@ public class GameController {
 
     @FXML
     private void showWinAlert() {
+        stopTimer(); // Hentikan waktu saat menang
+        // Simpan waktu terakhir ke variabel sementara agar tidak hilang
+        int finalTime = seconds;
+
+        GameState state = GameState.getInstance();
+        int currentSize = state.getSize();
+        if (finalTime < state.getBestTime(currentSize)) {
+            state.setBestTime(currentSize, finalTime);
+            SaveManager.save(); // Simpan rekor permanen
+        }
+        int currentTime = seconds; // dari variabel timer
+
+        // Cek apakah ini rekor baru
+        int previousBest = state.getBestTime(currentSize);
+        if (currentTime < previousBest) {
+            state.setBestTime(currentSize, currentTime);
+            // Simpan ke file agar rekor tidak hilang saat aplikasi ditutup
+            SaveManager.save();
+            System.out.println("Rekor Baru Tercipta!");
+        }
+
         // Jalankan sedikit delay agar user bisa melihat papan terakhir sebelum pindah
-        javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(0.5));
+        javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(1));
         delay.setOnFinished(event -> {
             // Hapus data permainan yang sudah selesai
             SaveManager.deleteSave();
             GameState.getInstance().setBoard(null);
+
 
             // Pindah ke Win Scene
             SceneManager.switchScene("/view/win_scene.fxml");

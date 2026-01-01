@@ -17,6 +17,8 @@
 
             <Label text="You have solved the puzzle!" style="-fx-font-size: 18px; -fx-text-fill: lightgray;"/>
 
+            <Label fx:id="timeLabel" text="Rekor: --:--" style="-fx-font-size:16px;"/>
+
             <HBox alignment="CENTER" spacing="20">
                 <Button text="Play Again" prefWidth="120" prefHeight="40" onAction="#restartGame"
                         style="-fx-background-color: #F6F5F2; -fx-text-fill: #3F4F44;"/>

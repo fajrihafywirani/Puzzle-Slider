@@ -25,6 +25,7 @@ public class SizeSelectController {
         GameState state = GameState.getInstance();
         // 1. Set ukuran di GameState
         state.setSize(size);
+        state.setSecondsElapsed(0); // RESET WAKTU KE NOL
 
         int totalGambar = 6;
         int randomIdx = RAND.nextInt(totalGambar) + 1;

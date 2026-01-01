@@ -16,6 +16,7 @@
                     onAction="#backToMenu"/>
             <Label fx:id="modeLabel"
                    style="-fx-font-size:16px; -fx-text-fill:#3F4F44;"/>
+            <Label fx:id="timerLabel" text="Waktu: 00:00" style="-fx-font-size:16px;"/>
         </HBox>
     </top>
 
