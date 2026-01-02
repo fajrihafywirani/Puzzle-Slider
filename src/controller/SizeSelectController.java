@@ -5,7 +5,6 @@ import model.GameState;
 import util.MusicPlayer;
 import util.SceneManager;
 import util.SaveManager;
-import java.util.Random;
 
 public class SizeSelectController {
 
