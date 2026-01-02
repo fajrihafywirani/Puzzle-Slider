@@ -236,7 +236,9 @@ public class GameController {
     @FXML // Pastikan anotasi ini ada
     public void backToMenu() {
         MusicPlayer.playClickSound();
+        stopTimer();
         if (puzzle != null) {
+            GameState.getInstance().setSecondsElapsed(this.seconds);
             GameState.getInstance().setBoard(puzzle.board);
             SaveManager.save();
         }
